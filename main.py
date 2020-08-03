@@ -21,7 +21,7 @@ from utils.plot_cmx import plot_confusion_matrix
 from utils.setup_logger import setup_logger
 from models.generalizer import Generalizer
 from models.metrics.metrics import Metrics
-from models.networks.network import AutoEncoder
+from models.networks.network import VAE
 
 logger = getLogger(__name__)
 
@@ -74,7 +74,7 @@ def main():
     ### Network ###
     logger.info('preparing network...')
 
-    network = AutoEncoder(in_channels=configs['n_channels'])
+    network = VAE(in_channels=configs['n_channels'], h_dim=1024, z_dim=32, device=device)
 
     network = network.to(device)
     criterion = nn.MSELoss()

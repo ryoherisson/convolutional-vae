@@ -40,9 +40,11 @@ class Generalizer(object):
                 for idx, (inputs, fnames) in enumerate(pbar):
                     inputs = inputs.to(self.device)
 
-                    outputs = self.network(inputs)
+                    outputs, mu, logvar = self.network(inputs)
 
-                    loss = self.criterion(outputs, inputs)
+                    base_loss = self.criterion(outputs, inputs)
+                    kl_div_loss = -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
+                    loss = base_loss + kl_div_loss
 
                     loss.backward()
 
@@ -89,12 +91,13 @@ class Generalizer(object):
             if inference:
                 with tqdm(self.test_loader, ncols=100) as pbar:
                         for idx, (inputs, fnames) in enumerate(pbar):
-
                             inputs = inputs.to(self.device)
 
-                            outputs = self.network(inputs)
+                            outputs, mu, logvar = self.network(inputs)
 
-                            loss = self.criterion(outputs, inputs)
+                            base_loss = self.criterion(outputs, inputs)
+                            kl_div_loss = -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
+                            loss = base_loss + kl_div_loss
 
                             self.optimizer.zero_grad()
 
@@ -115,12 +118,13 @@ class Generalizer(object):
             else:
                 with tqdm(self.test_loader, ncols=100) as pbar:
                         for idx, (inputs, fnames) in enumerate(pbar):
-
                             inputs = inputs.to(self.device)
 
-                            outputs = self.network(inputs)
+                            outputs, mu, logvar = self.network(inputs)
 
-                            loss = self.criterion(outputs, inputs)
+                            base_loss = self.criterion(outputs, inputs)
+                            kl_div_loss = -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
+                            loss = base_loss + kl_div_loss
 
                             self.optimizer.zero_grad()
 
