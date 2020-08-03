@@ -1,4 +1,4 @@
-# Convolutional Variational AutoEncoder with pytorch
+# Convolutional Variational AutoEncoder in pytorch
 This is a pytorch implementation of Convolutional Variational AutoEncoder. 
 
 ## Requirements
